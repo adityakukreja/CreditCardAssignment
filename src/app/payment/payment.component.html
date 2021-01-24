@@ -1,0 +1,64 @@
+<div class="creditCardForm">
+    <div class="heading">
+        <h1>Confirm Payment</h1>
+    </div>
+    <div class="payment">
+        <form #PaymentForm="ngForm" (ngSubmit)="completePayment()">
+            <div class="owner mat20">
+                <input type="text" placeholder="Card Holder" id="owner" name="owner" [(ngModel)]="cardHolder" class="pad15 fieldwidth" required pattern="^[A-Za-z][-a-zA-Z ]+$" >
+                <div class="errorMsg" *ngIf="PaymentForm.controls['owner']?.errors?.pattern">Please Enter Valid Card Holder Name</div>
+            </div>
+            <div class="CVV mat20">
+                <input type="password" placeholder="CVV" minlength="3" maxlength="3" id="cvv" name="cvv" [(ngModel)]="securitypin" pattern="[0-9]+" class="pad15 fieldwidth" >
+                <div class="errorMsg" *ngIf="PaymentForm.controls['cvv']?.errors?.pattern || PaymentForm.controls['cvv']?.errors?.minlength">Please Enter Valid Cvv</div>
+            </div>
+
+            <div class="owner mat20">
+                <input type="text" placeholder="Expiry (mm/yy)" maxlength="5" minlength="5" (keyup)="addDateFormat()" required class="pad15 fieldwidth"  id="expiry" name="expiry" [(ngModel)]="expiryDate">
+            
+            </div>
+
+            <div class="owner mat20"> 
+                <input type="text" placeholder="Amount" class="pad15 fieldwidth" id="amt" name="amt" [(ngModel)]="amount" required pattern="^[1-9][0-9]*$"  >
+                <div class="errorMsg" *ngIf="PaymentForm.controls['amt']?.errors?.pattern">Please Enter Valid Amount</div>
+            </div>
+
+
+            <div class="owner mat20">
+                <input type="text" placeholder="Card Number" class="pad15 fieldwidth" id="cardnum" name="cardnum" [(ngModel)]="cardNumber" maxlength="16" minlength="16" required pattern="[0-9]+" >
+                <div class="errorMsg" *ngIf="PaymentForm.controls['cardnum']?.errors?.pattern || PaymentForm.controls['cardnum']?.errors?.minlength">Please Enter Valid Card Number</div>
+            </div>
+          
+           
+            <div  id="pay-now">
+                <button type="submit" [disabled]="!PaymentForm.valid" class="btn btn-default" id="confirm-purchase">Submit</button>
+            </div>
+        </form>
+
+
+        <table style="width:100%;margin-top: 50px;" *ngIf="cardData">
+            <caption style="font-size: 20px;"><strong>Card Store Data</strong></caption>
+            <tr>
+              <th>cardHolder</th>
+              <th>cardNumber</th>
+              <th>amount</th>
+              <th>cvv</th>
+              <th>expiryDate</th>
+
+            </tr>
+            <tr *ngFor="let val of pay$ | async">
+              <td>{{val.cardHolder}}</td>
+              <td>{{val.cardNumber}}</td>
+              <td>{{val.amount}}</td>
+              <td>{{val.cvv}}</td>
+              <td>{{val.expiryDate}}</td>
+
+            </tr>
+          
+          </table>
+          
+
+
+    </div>
+</div>
+
